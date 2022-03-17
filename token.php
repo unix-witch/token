@@ -42,12 +42,8 @@
         if (strcmp($newSig, $signature) !== 0){
             return false;
         }
-        
-        if ($payloadData->expire < time()){
-            return false;
-        }
 
-        return true; //Token is a valid token
+        return $payloadData->expire < time();
     }
 
 
