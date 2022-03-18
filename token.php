@@ -39,11 +39,7 @@
         $newSig = hash_hmac('sha256', $header . '.' . $payload, $secret);
 
             
-        if (strcmp($newSig, $signature) !== 0){
-            return false;
-        }
-
-        return $payloadData->expire < time();
+        return ((strcmp($newSig, $signature) != 0) && ($payloadData->expire < time()));
     }
 
 
