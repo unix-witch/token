@@ -42,5 +42,39 @@
         return ((strcmp($newSig, $signature) != 0) && ($payloadData->expire < time()));
     }
 
+    function getJWTData($token) {
+        $explodedToken = explode('.', $token);
+        $header = $explodedToken[0];
+        $payload = $explodedToken[1];
+        $signature = $explodedToken[2];
+
+        return array(
+            0 => json_decode(base64_decode($header)),
+            1 => json_decode(base64_decode($payload)),
+            2 => json_decode(base64_decode($signature))
+        );
+    }
+
+    function checkIfValidJWT($token) {
+        $explodedToken = explode('.', token);
+        $header = $explodedToken[0];
+        $payload = $explodedToken[1];
+        $sig = $explodedToken[2];
+
+        if (!is_string($token)) return false;
+        if (count($explodedToken) != 3) return false;
+        
+        if (!base64_encode(base64_decode($sig)) == $sig) return false;
+        if (!base64_encode(base64_decode($header)) == $header) return false;
+        if (!base64_encode(base64_decode($payload)) == $payload) return false;
+        
+        $sig = json_decode($sig);
+        $headerJson = json_decode($header);
+        $payloadJson = json_decode($payload);
+
+        if (json_last_error() != JSON_ERROR_NONE) return false;
+        
+        return true;
+    }
 
 ?>
